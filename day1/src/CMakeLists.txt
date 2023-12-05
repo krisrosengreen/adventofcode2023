@@ -7,7 +7,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 add_subdirectory(../../utils ../../utils_build)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
+
 file(COPY input DESTINATION "${CMAKE_BINARY_DIR}")
+file(COPY input_test DESTINATION "${CMAKE_BINARY_DIR}")
+file(COPY input_test_c DESTINATION "${CMAKE_BINARY_DIR}")
 
 add_executable(aoc main.cpp)
 

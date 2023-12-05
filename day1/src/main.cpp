@@ -1,10 +1,8 @@
-#include <cctype>
 #include <iostream>
 #include <map>
 #include <string>
-#include <fstream>
 #include <vector>
-#include <sstream>
+#include "utils.h"
 
 using std::string, std::cout, std::endl, std::vector;
 
@@ -22,29 +20,10 @@ const std::map<string, int> substr_val_pair = {
     {"nine", 9},
 };
 
-string read_input(string input_text) {
-    std::ifstream file(input_text);
-    std::string content((std::istreambuf_iterator<char>(file)),
-            (std::istreambuf_iterator<char>()));
-    
-    return content;
-}
-
-vector<string> get_lines(string input_text, string &content) {
-    std::vector<string> tokens;
-    std::stringstream ss(content);
-    std::string token;
-    while (std::getline(ss, token, '\n')) {
-        tokens.push_back(token);
-    }
-
-    return tokens;
-}
-
 int part_A(string input_text) {
 
-    string content = read_input(input_text);
-    auto lines = get_lines(input_text, content);
+    string content = utils::read_input(input_text);
+    auto lines = utils::get_lines(content);
 
     vector<int> values;
 
@@ -79,33 +58,42 @@ int part_A(string input_text) {
     return sum;
 }
 
-template <typename replacer>
-void replace(string &str, const std::map<string, replacer> &el_map) {
-    for (auto const& [key, val] : el_map) {
-        size_t pos = str.find(key);
 
-        if (pos != string::npos) {
-            str.replace(pos, key.length(), std::to_string(val));
-        }
-    }
-}
+template <typename T>
+string copy_digits(string &str, const std::map<string, T> &el_map) {
+    string new_string(str.length(), ' ');
 
-template <typename replacer>
-void replaceAll(string &str, const std::map<string, replacer> &el_map) {
     for (auto const& [key, val] : el_map) {
         size_t pos = 0;
-        while ((pos = str.find(key, pos)) != string::npos) {
-            str.replace(pos, key.length(), std::to_string(val));
+        while((pos = str.find(key, pos)) != string::npos) {
+            new_string.replace(pos, 1, std::to_string(val));
+            pos += 1;
         }
     }
+
+    for (int i = 0; i < str.length(); i++) {
+        if (std::isdigit(str.at(i))) {
+            new_string.replace(i, 1, string(1, str.at(i)));
+        }
+    }
+
+    return new_string;
+}
+
+std::vector<string> copy_vector_digits(std::vector<string> lines) {
+    std::vector<string> new_vec;
+
+    for (string line : lines) {
+        new_vec.push_back(copy_digits(line, substr_val_pair));
+    }
+
+    return new_vec;
 }
 
 int part_B(string input_text) {
-    string content = read_input(input_text);
-
-    // Replace all number words to numbers
-    replaceAll<int>(content, substr_val_pair);
-    auto lines = get_lines(input_text, content);
+    string content = utils::read_input(input_text);
+    auto raw_lines = utils::get_lines(content);
+    auto lines = copy_vector_digits(raw_lines);
 
     vector<int> values;
 
@@ -151,19 +139,24 @@ void test_B() {
 
 
 void test_C() {
-    cout << "(b) Test val: " << part_B("input_test_c") << " correct val: " << 281 << endl;
+    cout << "(c) Test val: " << part_B("input_test_c") << " correct val: " << 281 << endl;
+
+    string content = utils::read_input("input_test_c");
+    auto raw_lines = utils::get_lines(content);
+    auto lines = copy_vector_digits(raw_lines);
+
+    cout << "[PART C]" << endl;
+    for (auto line : lines) {
+        cout << line << endl;
+    }
+
+    cout << "[END PART C]" << endl;
 }
 
 int main() {
     test();
     test_B();
     test_C();
-
-    string ts = "There once was a one small man two called Ben";
-
-    replaceAll<int>(ts, substr_val_pair);
-
-    cout << ts << endl;
 
     int ans = part_A(input_text_A);
     cout << "(A) Total found: " << ans << endl;
