@@ -28,7 +28,14 @@ namespace utils {
 
     bool vector_contains(vector<string> &vec, string key);
 
-    void print_vector(std::vector<std::string> &vec);
+    //void print_vector(std::vector<std::string> &vec);
+
+    template <typename T>
+    void print_vector(vector<T> const& vec) {
+        for (auto v : vec) {
+            cout << v << endl;
+        }
+    }
 
     void print_vector_int(std::vector<int> &vec);
 

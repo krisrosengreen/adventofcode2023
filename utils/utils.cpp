@@ -72,12 +72,14 @@ std::vector<std::string> split(std::string &str, std::string del){
     return tokens;
 }
 
+/*
 void print_vector(std::vector<std::string> &vec) {
     std::cout << "Printing vector" << std::endl;
     for (int i = 0; i < vec.size(); i++) {
         std::cout << "Line " << i << ": " << vec[i] << std::endl;
     }
 }
+*/
 
 void print_vector_int(std::vector<int> &vec) {
     std::cout << "Printing vector" << std::endl;
