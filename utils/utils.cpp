@@ -96,6 +96,16 @@ int sum(std::vector<int> &vals) {
     return sum;
 }
 
+int prod(std::vector<int> &vals) {
+    int prod = 1;
+
+    for (int val : vals) {
+        prod *= val;
+    }
+
+    return prod;
+}
+
 
 /*
  *

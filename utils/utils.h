@@ -23,6 +23,8 @@ namespace utils {
 
     int sum(std::vector<int> &vals);
 
+    int prod(std::vector<int> &vals);
+
     void print_vector(std::vector<std::string> &vec);
 
     void print_vector_int(std::vector<int> &vec);
