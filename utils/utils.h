@@ -25,6 +25,8 @@ namespace utils {
 
     void print_vector(std::vector<std::string> &vec);
 
+    void print_vector_int(std::vector<int> &vec);
+
     /*
      *
      * Trimming functions

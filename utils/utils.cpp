@@ -79,6 +79,13 @@ void print_vector(std::vector<std::string> &vec) {
     }
 }
 
+void print_vector_int(std::vector<int> &vec) {
+    std::cout << "Printing vector" << std::endl;
+    for (int i = 0; i < vec.size(); i++) {
+        std::cout << "Line " << i << ": " << vec[i] << std::endl;
+    }
+}
+
 int sum(std::vector<int> &vals) {
     int sum = 0;
 
