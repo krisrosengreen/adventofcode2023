@@ -64,24 +64,65 @@ int part_A(string input_file) {
     return utils::sum(ids);
 }
 
-void some_testing_strings() {
-    string teststr = "asdasd asddasda";
-    auto lines = utils::split(teststr, " ");
+int part_B(string input_file) {
+    string content = utils::read_input(input_file);
+    vector<string> lines = utils::get_lines(content);
 
-    for (auto line : lines) {
-        cout << "line: " << line << endl;
+    vector<int> ids;
+
+    for (string line : lines) {
+        vector<string> id_cubes = utils::split(line, ": ");
+        string id_str = id_cubes[0];
+        
+        int id = std::stoi(utils::split(id_str, " ")[1]);
+        
+        string cubes = id_cubes[1];
+        
+        vector<string> subgames = utils::split(cubes, "; ");
+        
+        int red = 0;
+        int green = 0;
+        int blue = 0;
+
+        for (string subgame : subgames) {
+            vector<string> cubes = utils::split(subgame, ", ");
+
+
+            for (string cube : cubes) {
+                 vector<string> count_color = utils::split(cube, " ");
+                 int count = std::stoi(count_color[0]);
+                 string color = count_color[1];
+
+                 if (color == "green") {
+                     if (count > green) green = count;
+                 } else if (color == "red") {
+                     if (count > red) red = count;
+                 } else if (color == "blue") {
+                     if (count > blue) blue = count;
+                 }
+            }
+        }
+
+        ids.push_back(red*green*blue);
     }
+
+    return utils::sum(ids);
 }
 
 void test_input() {
     int ans = part_A("test");
-    cout << "Test val: " << ans << " should be: " << 8 << endl;
+    cout << "(a) Test val: " << ans << " should be: " << 8 << endl;
+
+    int ans_b = part_B("test");
+    cout << "(b) Test val: " << ans_b << " should be: " << 2286 << endl;
 }
 
 int main() {
     test_input();
 
     int ans = part_A(input_A);
+    int ans_b = part_B(input_A);
 
-    cout << "Answer: " << ans << endl;
+    cout << "(a) Answer: " << ans << endl;
+    cout << "(b) Answer: " << ans_b << endl;
 }

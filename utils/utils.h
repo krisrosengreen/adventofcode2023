@@ -1,6 +1,9 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <iostream>
+
+using std::cout, std::endl, std::string, std::vector;
 
 namespace utils {
 
@@ -12,14 +15,15 @@ namespace utils {
     void replace(std::string &str, const std::map<std::string, T> &el_map);
 
     template <typename T>
-    void replaceAll(std::string &str, const std::map<std::string, T> &el_map);
+    void replaceAll_map(std::string &str, const std::map<std::string, T> &el_map);
+
+    void replaceAll(std::string &str, std::string key, std::string val);
 
     std::vector<std::string> split(std::string &str, std::string del);
 
     int sum(std::vector<int> &vals);
 
-    template <typename T>
-    void print_vector(std::vector<T> &vec);
+    void print_vector(std::vector<std::string> &vec);
 
     /*
      *
@@ -38,4 +42,18 @@ namespace utils {
     static inline std::string rtrim_copy(std::string s);
 
     static inline std::string trim_copy(std::string s);
+
+    /*
+     *
+     *
+     * Some regex functions!
+     *
+     */
+
+    struct rmatch {
+        vector<int> indeces;
+        vector<string> strs;
+    };
+
+    rmatch reg_match(string input, string pattern);
 }

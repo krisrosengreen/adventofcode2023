@@ -4,6 +4,8 @@
 #include <cctype>
 #include <algorithm>
 #include <iostream>
+#include <vector>
+#include <regex>
 
 namespace utils {
 
@@ -38,12 +40,19 @@ void replace(std::string &str, const std::map<std::string, T> &el_map) {
 }
 
 template <typename T>
-void replaceAll(std::string &str, const std::map<std::string, T> &el_map) {
+void replaceAll_map(std::string &str, const std::map<std::string, T> &el_map) {
     for (auto const& [key, val] : el_map) {
         size_t pos = 0;
         while ((pos = str.find(key, pos)) != std::string::npos) {
             str.replace(pos, 1, std::to_string(val));
         }
+    }
+}
+
+void replaceAll(std::string &str, std::string key, std::string val) {
+    size_t pos = 0;
+    while ((pos = str.find(key, pos)) != std::string::npos) {
+        str.replace(pos, 1, val);
     }
 }
 
@@ -110,6 +119,34 @@ static inline void trim(std::string &s) {
 static inline std::string ltrim_copy(std::string s) {
     ltrim(s);
     return s;
+}
+
+/*
+ *
+ * Some regex function
+ *
+ */
+
+rmatch reg_match(string input, string pattern) {
+    std::regex rx(pattern);
+
+    vector<int> index_match;
+    vector<string> string_match;
+
+    for (auto it = std::sregex_iterator(input.begin(), input.end(), rx);
+            it != std::sregex_iterator(); ++it) {
+        std::smatch match = *it;
+        string match_str = match.str();
+
+        index_match.push_back(it->position());
+        string_match.push_back(match_str);
+    }
+
+    rmatch req_match;
+    req_match.indeces = index_match;
+    req_match.strs = string_match;
+
+    return req_match;
 }
 
 }
