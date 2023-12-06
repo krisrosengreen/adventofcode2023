@@ -107,6 +107,9 @@ int prod(std::vector<int> &vals) {
 }
 
 
+bool vector_contains(vector<string> &vec, string key) {
+    return std::find(vec.begin(), vec.end(), key) != vec.end();
+}
 /*
  *
  * Trimming functions!
@@ -165,5 +168,11 @@ rmatch reg_match(string input, string pattern) {
 
     return req_match;
 }
+
+/*
+ *
+ * Minor testing stuff
+ *
+ */
 
 }

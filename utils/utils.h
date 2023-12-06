@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <string>
 #include <vector>
 #include <map>
@@ -24,6 +25,8 @@ namespace utils {
     int sum(std::vector<int> &vals);
 
     int prod(std::vector<int> &vals);
+
+    bool vector_contains(vector<string> &vec, string key);
 
     void print_vector(std::vector<std::string> &vec);
 
