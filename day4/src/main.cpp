@@ -26,25 +26,27 @@ int line_points(string line) {
     return count;
 }
 
-int rec_points(vector<string> &lines, int current_index) {
-    static std::map<int, int> values;
-    std::map<int, int>::iterator iter = values.find(current_index);
-    if (iter != values.end()) {
-        return iter->second;
-    }
+class rec_B {
+    public:
+        std::map<int, int> values;
+        int rec_points(vector<string> &lines, int current_index) {
+            std::map<int, int>::iterator iter = values.find(current_index);
+            if (iter != values.end()) {
+                return iter->second;
+            }
 
-    int points_sum = 0;
-    int this_points = line_points(lines[current_index]);
-    points_sum += this_points;
+            int points_sum = 0;
+            int this_points = line_points(lines[current_index]);
+            points_sum += this_points;
 
-    if (this_points != 0) {
-        for (int i = current_index + 1; i < current_index + this_points + 1; i++) {
-            points_sum += rec_points(lines, i);
+            for (int i = current_index + 1; i < current_index + this_points + 1; i++) {
+                points_sum += rec_points(lines, i);
+            }
+
+            return values[current_index] = points_sum;
         }
-    }
+};
 
-    return values[current_index] = points_sum;
-}
 
 int part_B(string input_file) {
     string content = utils::read_input(input_file);
@@ -52,9 +54,11 @@ int part_B(string input_file) {
 
     int sum_points = 0;
 
+    rec_B rec;
+
     for (int i = 0; i < lines.size(); i++) {
         sum_points++; 
-        sum_points += rec_points(lines, i);
+        sum_points += rec.rec_points(lines, i);
     }
 
     return sum_points;
@@ -100,14 +104,19 @@ void test_A() {
 
 void test_B() {
     int ans_B = part_B(test_input_A);
-
     cout << "(TEST B) " << ans_B << endl;
+}
+
+void test_C() {
+    int ans_B = part_B("test2");
+    cout << "(TEST C) " << ans_B << endl;
 }
 
 int main() {
     test_A();
     test_B();
-    
+    test_C();
+   
     int ans = part_A(input);
     cout << "(A) " << ans << endl;
 
