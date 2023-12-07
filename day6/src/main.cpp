@@ -19,7 +19,7 @@ int min_time(int time_max, int dist_record) {
         approx_time++;
     }
 
-    return 1;
+    return approx_time;
 }
 
 int num_wins(int max_time, int win_distance) {
@@ -105,13 +105,19 @@ void test_B() {
     cout << "[TEST B] " << val << endl;
 }
 
+void test_C() {
+    int wins = num_wins(71530, 940200);
+    cout << wins << endl;
+}
+
 int main() {
     // test_A();
     // test_B();
+    test_C();
 
     // int ans_A = part_A(input);
     // cout << "(A) " << ans_A << endl;
 
-    int ans_B = part_B(input);
-    cout << "(B) " << ans_B << endl;
+    // int ans_B = part_B(input);
+    // cout << "(B) " << ans_B << endl;
 }
