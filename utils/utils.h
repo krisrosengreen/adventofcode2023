@@ -12,6 +12,8 @@ namespace utils {
 
     std::vector<std::string> get_lines(std::string &content);
 
+    vector<int> vec_str_to_int(vector<string> const& vec);
+
     template <typename T>
     void replace(std::string &str, const std::map<std::string, T> &el_map);
 
@@ -70,4 +72,6 @@ namespace utils {
     };
 
     rmatch reg_match(string input, string pattern);
+
+    vector<string> reg_match_strs(string input, string pattern);
 }

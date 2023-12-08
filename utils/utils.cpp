@@ -28,6 +28,12 @@ std::vector<std::string> get_lines(std::string &content) {
     return tokens;
 }
 
+vector<int> vec_str_to_int(vector<string> const& vec) {
+    vector<int> a;
+    for (auto val : vec) a.push_back(std::stoi(val));
+    return a;
+}
+
 template <typename T>
 void replace(std::string &str, const std::map<std::string, T> &el_map) {
     for (auto const& [key, val] : el_map) {
@@ -71,15 +77,6 @@ std::vector<std::string> split(std::string &str, std::string del){
 
     return tokens;
 }
-
-/*
-void print_vector(std::vector<std::string> &vec) {
-    std::cout << "Printing vector" << std::endl;
-    for (int i = 0; i < vec.size(); i++) {
-        std::cout << "Line " << i << ": " << vec[i] << std::endl;
-    }
-}
-*/
 
 void print_vector_int(std::vector<int> &vec) {
     std::cout << "Printing vector" << std::endl;
@@ -169,6 +166,12 @@ rmatch reg_match(string input, string pattern) {
     req_match.strs = string_match;
 
     return req_match;
+}
+
+vector<string> reg_match_strs(string input, string pattern) {
+    rmatch regm = reg_match(input, pattern);
+
+    return regm.strs;
 }
 
 /*
