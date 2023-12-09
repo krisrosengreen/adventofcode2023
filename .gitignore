@@ -1,4 +1,6 @@
 day*/build
 day*/build/*
+day*/.cache
+day*/.cache/*
 utils_build
 utils_build/*
