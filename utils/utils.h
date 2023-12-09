@@ -74,4 +74,21 @@ namespace utils {
     rmatch reg_match(string input, string pattern);
 
     vector<string> reg_match_strs(string input, string pattern);
+
+    /*
+     *
+     * Math functions
+     *
+     */
+
+    template <typename T>
+    T gcd(T a, T b) {
+        if (b == 0) return a;
+        return gcd(b, a % b);
+    }
+
+    template <typename T>
+    T lcm(T a, T b) {
+        return (a*b)/gcd(a, b);
+    }
 }

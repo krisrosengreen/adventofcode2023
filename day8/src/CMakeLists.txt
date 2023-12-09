@@ -4,6 +4,7 @@ project(aoc)
 
 file(COPY input DESTINATION "${CMAKE_BINARY_DIR}")
 file(COPY test DESTINATION "${CMAKE_BINARY_DIR}")
+file(COPY test2 DESTINATION "${CMAKE_BINARY_DIR}")
 
 add_subdirectory(../../utils ../../utils_build)
 
