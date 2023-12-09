@@ -12,6 +12,8 @@ namespace utils {
 
     std::vector<std::string> get_lines(std::string &content);
 
+    vector<string> read_lines(string input_text);
+
     vector<int> vec_str_to_int(vector<string> const& vec);
 
     template <typename T>
@@ -24,7 +26,16 @@ namespace utils {
 
     std::vector<std::string> split(std::string &str, std::string del);
 
-    int sum(std::vector<int> &vals);
+    template <typename T>
+    int sum(std::vector<T> &vals) {
+        T sum = 0;
+
+        for (T val : vals) {
+            sum += val;
+        }
+
+        return sum;
+    }
 
     int prod(std::vector<int> &vals);
 

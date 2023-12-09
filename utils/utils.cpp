@@ -28,6 +28,11 @@ std::vector<std::string> get_lines(std::string &content) {
     return tokens;
 }
 
+vector<string> read_lines(string input_text) {
+    string content = read_input(input_text);
+    return get_lines(content);
+} 
+
 vector<int> vec_str_to_int(vector<string> const& vec) {
     vector<int> a;
     for (auto val : vec) a.push_back(std::stoi(val));
@@ -85,15 +90,6 @@ void print_vector_int(std::vector<int> &vec) {
     }
 }
 
-int sum(std::vector<int> &vals) {
-    int sum = 0;
-
-    for (int val : vals) {
-        sum += val;
-    }
-
-    return sum;
-}
 
 int prod(std::vector<int> &vals) {
     int prod = 1;
