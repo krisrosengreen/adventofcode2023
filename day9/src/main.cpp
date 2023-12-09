@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <iostream>
 #include <vector>
 #include <string>
@@ -44,18 +45,6 @@ Diffs rec_sequence_pred(vector<llint> sequence) {
     }
 }
 
-Diffs rec_sequence_pred_back(vector<llint> sequence) {
-    if (utils::sum(sequence) == 0) {
-        return Diffs{0};
-    } else {
-        Diffs ds = rec_sequence_pred_back(differences(sequence));
-        int diff = sequence[0] - ds.lower_row_predict;
-        ds.lower_row_predict = diff;
-
-        return ds;
-    }
-}
-
 int part_A(string input_file) {
     auto lines = utils::read_lines(input_file);
 
@@ -78,7 +67,8 @@ int part_B(string input_file) {
 
     for (string line : lines) {
         vector<llint> sequence = get_values(line);
-        Diffs ds = rec_sequence_pred_back(sequence);
+        std::reverse(sequence.begin(), sequence.end());
+        Diffs ds = rec_sequence_pred(sequence);
 
         sum += ds.lower_row_predict;
     }
