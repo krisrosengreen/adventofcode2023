@@ -27,7 +27,7 @@ namespace utils {
     std::vector<std::string> split(std::string &str, std::string del);
 
     template <typename T>
-    int sum(std::vector<T> &vals) {
+    T sum(std::vector<T> &vals) {
         T sum = 0;
 
         for (T val : vals) {

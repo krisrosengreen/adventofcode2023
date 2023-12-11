@@ -9,27 +9,28 @@
 
 using std::string, std::vector, std::make_pair, std::map;
 using llint = long long int;
-using coord = std::pair<int, int>;
+using coord = std::pair<llint, llint>;
 
 const string input = "input";
 const string test = "test";
 
 struct Galaxy {
-    int x_inflate;
-    int y_inflate;
+    llint x_inflate;
+    llint y_inflate;
 };
 
 void print_coord(coord& c) {
     cout << c.first << " " << c.second << endl;
 }
 
-int expand_universe(string input, int rate_expansion) {
+llint expand_universe(string input, llint rate_expansion) {
+    rate_expansion--; // One row expansion is already counted for in code below
     auto lines = utils::read_lines(input);
 
     map<coord, Galaxy> galaxies;
 
     // expand y-space
-    int y_space_expansion = 0;
+    llint y_space_expansion = 0;
     for (int y = 0; y < lines.size(); y++) {
         int n_empty_space = 0;
         for (int x = 0; x < lines[0].size(); x++) {
@@ -40,11 +41,13 @@ int expand_universe(string input, int rate_expansion) {
             } 
         }
 
-        if (n_empty_space == lines[0].size()) y_space_expansion+=rate_expansion;
+        if (n_empty_space == lines[0].size()) y_space_expansion += rate_expansion;
     }
 
+    vector<coord> post_expansion_pos;
+
     // expand x-space
-    int x_space_expansion = 0;
+    llint x_space_expansion = 0;
     for (int x = 0; x < lines[0].size(); x++) {
         int n_empty_space = 0;
         for (int y = 0; y < lines.size(); y++) {
@@ -52,24 +55,17 @@ int expand_universe(string input, int rate_expansion) {
             else if (lines[y][x] == '#') {
                 coord pos = make_pair(x, y);
                 galaxies[pos].x_inflate = x_space_expansion;
+                post_expansion_pos.push_back({pos.first + x_space_expansion, pos.second + galaxies[pos].y_inflate});
             } 
         }
 
-        if (n_empty_space == lines.size()) x_space_expansion+=rate_expansion;
+        if (n_empty_space == lines.size()) x_space_expansion += rate_expansion;
     }
 
-    vector<coord> post_expansion_pos;
-
-    for (auto const& [key, val] : galaxies) {
-        post_expansion_pos.push_back(make_pair(key.first + val.x_inflate, key.second + val.y_inflate));
-    }
-
-
-    vector<int> smallest_distances;
-    for (int i = 0; i < post_expansion_pos.size(); i++) {
+    vector<llint> smallest_distances;
+    for (int i = 0; i < post_expansion_pos.size()-1; i++) {
         for (int j = i+1; j < post_expansion_pos.size(); j++) {
-            if (i == j) continue;
-            int distance = abs(post_expansion_pos[i].first - post_expansion_pos[j].first) + abs(post_expansion_pos[i].second - post_expansion_pos[j].second);
+            llint distance = llabs(post_expansion_pos[i].first - post_expansion_pos[j].first) + llabs(post_expansion_pos[i].second - post_expansion_pos[j].second);
             smallest_distances.push_back(distance);
         }
     }
@@ -78,21 +74,36 @@ int expand_universe(string input, int rate_expansion) {
 }
 
 int part_A(string input) {
-    return expand_universe(input, 1);
+    return expand_universe(input, 2); // Empty rows are doubled
+}
+
+llint part_B(string input) {
+    return expand_universe(input, 1000000); // Emptry rows a re multiplied by a million
 }
 
 void test_A() {
     int val = part_A(input); 
-    cout << "ans: " << val << endl;
+    cout << "[test A] ans: " << val << endl;
 }
 
 void test_B() {
-    // int val = part_B(test); 
-    // cout << "ans: " << val << endl;
+    int val_a = expand_universe(test, 2);
+    cout << "[test B1] ans: " << val_a << endl;
+
+    int val = expand_universe(test, 10);
+    cout << "[test B2] ans: " << val << endl;
+
+    llint val_b = expand_universe(test, 100);
+    cout << "[test B3] ans: " << val_b << endl;
 }
 
 int main() {
-    // int val = part_A(input);
-    // cout << "(A) " << val << endl;
     test_A();
+
+    test_B();
+    int val = part_A(input);
+    cout << "[PART A] " << val << endl;
+
+    llint ans_b = expand_universe(input, 1000000);
+    cout << "[PART B] " << ans_b << endl;
 }
