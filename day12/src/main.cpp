@@ -44,29 +44,6 @@ string concatenate_string(string base, int count) {
     return base1_final;
 } 
 
-string concatenate_string_front(string base) {
-    auto splitted = utils::split(base, " ");
-
-    string base1 = splitted[0];
-    string base2 = splitted[1];
-
-    base1.append("? ");
-    base1.append(base2);
-
-    return base1;
-} 
-
-void print_string_at_range(string &text, int index, int range) {
-    for (int i = 0; i < text.size(); i++) {
-        if (i >= index && i <= index + range - 1) {
-            cout << "*";
-        } else {
-            cout << text[i];
-        }
-    }
-    cout << endl;
-} 
-
 int count_pounds(string text) {
     int sum = 0;
     for (int i = 0; i < text.size(); i++) {
@@ -143,9 +120,7 @@ llint poss_cfgs(string line) {
 }
 
 int part_A(string input_file) {
-
     auto lines = utils::read_lines(input_file);
-    
     int values = 0;
 
     for (string line : lines) {
@@ -168,12 +143,15 @@ llint part_B(string input_file) {
 }
 
 int main() {
+    llint vv = part_A("test");
+    cout << vv << endl;
+
     llint v0 = part_A("input");
-    cout << "value " << v0 << endl;
+    cout << v0 << endl;
 
     llint v = part_B("test");
-    cout << "value " << v << endl;
+    cout << v << endl;
 
     llint v1 = part_B("input");
-    cout << "value1 " << v1 << endl;
+    cout << v1 << endl;
 }
