@@ -37,7 +37,15 @@ namespace utils {
         return sum;
     }
 
-    int prod(std::vector<int> &vals);
+    template <typename T>
+    T prod(std::vector<T> &vals) {
+        T prod_vals = 1;
+        for (T v : vals) {
+            prod_vals*=v;
+        }
+
+        return prod_vals;
+    }
 
     bool vector_contains(vector<string> &vec, string key);
 

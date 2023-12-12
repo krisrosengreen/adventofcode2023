@@ -90,18 +90,6 @@ void print_vector_int(std::vector<int> &vec) {
     }
 }
 
-
-int prod(std::vector<int> &vals) {
-    int prod = 1;
-
-    for (int val : vals) {
-        prod *= val;
-    }
-
-    return prod;
-}
-
-
 bool vector_contains(vector<string> &vec, string key) {
     return std::find(vec.begin(), vec.end(), key) != vec.end();
 }

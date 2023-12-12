@@ -70,6 +70,8 @@ llint expand_universe(string input, llint rate_expansion) {
         }
     }
 
+
+
     return utils::sum(smallest_distances);
 }
 
