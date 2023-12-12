@@ -1,5 +1,6 @@
 #include <iostream>
 #include <map>
+#include <utility>
 #include <vector>
 #include <string>
 #include "utils.h"
@@ -75,52 +76,59 @@ int count_pounds(string text) {
     return sum;
 }
 
-int rec_count(string &text, vector<int> &vals, int current_val_index, int i_start_str, int pounds_counted_tot) {
-    int sum = 0;
-
-    int text_str_size = text.size();
-
-    int this_size = vals[current_val_index];
-
-    for (int i = i_start_str; i < text.size() - sum_from_index_pone(vals, current_val_index+1); i++) {
-        bool t = true;
-        int pounds_counted = 0;
-        for (int j = 0; j < this_size; j++) {
-            if (i + j >= text_str_size) {
-                t = false;
-                break;
+class Memoizer {
+    public:
+        map<std::pair<int, std::pair<int, int>>, llint> cache;
+        llint mem_rec_count(string &text, vector<int> &vals, int current_val_index, int i_start_str, int pounds_counted_tot) {
+            std::pair<int, std::pair<int, int>> pr = make_pair(pounds_counted_tot, make_pair(current_val_index, i_start_str));
+            if (cache.count(pr)) {
+                return cache[pr];
             }
-            if (text[i+j] == '#') pounds_counted++;
 
-            t *= (text[i+j] == '#' || text[i+j] == '?');
+            llint sum = 0;
+            int text_str_size = text.size();
+            int this_size = vals[current_val_index];
+            for (int i = i_start_str; i < text.size() - sum_from_index_pone(vals, current_val_index+1); i++) {
+                bool t = true;
+                int pounds_counted = 0;
+                for (int j = 0; j < this_size; j++) {
+                    if (i + j >= text_str_size) {
+                        t = false;
+                        break;
+                    }
+                    if (text[i+j] == '#') pounds_counted++;
+
+                    t *= (text[i+j] == '#' || text[i+j] == '?');
+                }
+
+                // Checking in front
+                if (i+this_size < text_str_size) {
+                    bool can_be_empty = (text[i+this_size] == '.' || text[i+this_size] == '?');
+                    t *= can_be_empty;
+                }
+
+                // Checking behind
+                if (i-1 >= 0) {
+                    bool can_be_empty = (text[i-1] == '.' || text[i-1] == '?');
+                    t *= can_be_empty;
+                }
+
+                if (current_val_index == vals.size() - 1 && t == true) {
+                    if (pounds_counted + pounds_counted_tot == count_pounds(text))
+                        sum+=1;
+                }
+
+                if (t && current_val_index != vals.size() - 1) {
+                    sum += mem_rec_count(text, vals, current_val_index+1, i+this_size+1, pounds_counted + pounds_counted_tot);
+                }
+            }
+
+            cache[pr] = sum;
+            return sum;
         }
+};
 
-        // Checking in front
-        if (i+this_size < text_str_size) {
-            bool can_be_empty = (text[i+this_size] == '.' || text[i+this_size] == '?');
-            t *= can_be_empty;
-        }
-
-        // Checking behind
-        if (i-1 >= 0) {
-            bool can_be_empty = (text[i-1] == '.' || text[i-1] == '?');
-            t *= can_be_empty;
-        }
-
-        if (current_val_index == vals.size() - 1 && t == true) {
-            if (pounds_counted + pounds_counted_tot == count_pounds(text))
-                sum+=1;
-        }
-
-        if (t && current_val_index != vals.size() - 1) {
-            sum += rec_count(text, vals, current_val_index+1, i+this_size+1, pounds_counted + pounds_counted_tot);
-        }
-    }
-
-    return sum;
-}
-
-int poss_cfgs(string line) {
+llint poss_cfgs(string line) {
     string linec = line;
     auto splitted = utils::split(linec, " ");
     string first_part = splitted[0];
@@ -128,7 +136,9 @@ int poss_cfgs(string line) {
 
     vector<int> counts = utils::vec_str_to_int(utils::split(second_part, ","));
 
-    int c = rec_count(first_part, counts, 0, 0, 0);
+    Memoizer m;
+    llint c = m.mem_rec_count(first_part, counts, 0, 0, 0);
+    // int c = rec_count(first_part, counts, 0, 0, 0);
     return c;
 }
 
@@ -150,42 +160,20 @@ llint part_B(string input_file) {
     llint values = 0;
 
     for (string line : lines) {
-        cout <<"[LINE]" << endl;
-        cout << line << endl;
-        string line1 = line;
-
-        string line3 = "?";
-        line3.append(line1);
-
-        string line2 = line1;
-        line2 = concatenate_string_front(line2);
-
-        string line5 = concatenate_string(line, 2);
-
-        llint countbase = poss_cfgs(line1);
-
-        llint count2 = poss_cfgs(line2);
-        llint count3 = poss_cfgs(line3);
-        llint c2prod = 1;
-        llint c3prod = 1;
-
-        for (int i = 0; i < 4; i++) {
-            c2prod *= count2;
-            c3prod *= count3;
-        }
-
-        llint finalval = c2prod*countbase;
-        llint finalval2 = c3prod*countbase;
-        cout << "FRO " << finalval << endl;
-        cout << "END " << finalval2 << endl;
-        cout << "count2 " << count2 << " count3 " << count3 << endl;
-        values += finalval;
+        string exp_line = concatenate_string(line, 5);
+        values += poss_cfgs(exp_line);
     }
 
     return values;
 }
 
 int main() {
+    llint v0 = part_A("input");
+    cout << "value " << v0 << endl;
+
     llint v = part_B("test");
     cout << "value " << v << endl;
+
+    llint v1 = part_B("input");
+    cout << "value1 " << v1 << endl;
 }
